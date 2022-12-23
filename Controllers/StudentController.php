@@ -2,49 +2,80 @@
 
 class StudentController
 {
-    public function index(): void
+    public function index(): bool
     {
-        require "Models/Student.php";
-        $arr = Student::all();
+        try {
+            require "Models/Student.php";
+            $students = Student::all();
 
-        require "views/student/index.php";
+            if (!empty($students)) {
+                require "views/student/index.php";
+                return true;
+            }
+
+            return false;
+        } catch (Throwable $e) {
+            echo $e->getMessage();
+            return false;
+        }
     }
 
-    public function create(): void
+    public function create(): bool
     {
-        require "Models/ClassObject.php";
-        $lops = ClassObject::all();
+        try {
+            require "Models/ClassObject.php";
+            $classes = ClassObject::all();
 
-        require "views/student/create.php";
+            if (!empty($classes)) {
+                require "views/student/create.php";
+                return true;
+            }
+
+            return false;
+        } catch (Throwable $e) {
+            echo $e->getMessage();
+            return false;
+        }
     }
 
-    public function store(): void
+    public function store(): bool
     {
         require "Models/Student.php";
-        Student::create($_POST);
+
+        return Student::create($_POST);
     }
 
-    public function edit(): void
+    public function edit(): bool
     {
-        $id = $_GET["id"];
-        require "Models/Student.php";
-        $each = Student::find($id);
+        try {
+            $id = $_GET["id"];
+            require "Models/Student.php";
+            $student = Student::find($id);
+            $classes = ClassObject::all();
 
-        require "Models/ClassObject.php";
-        $lops = ClassObject::all();
+            if(! empty($student) && ! empty($classes)){
+                require "views/student/edit.php";
+                return true;
+            }
 
-        require "views/student/edit.php";
+            return false;
+        } catch (Throwable $e) {
+            echo $e->getMessage();
+            return false;
+        }
     }
 
-    public function update(): void
+    public function update(): bool
     {
         require "Models/Student.php";
-        Student::update($_POST);
+
+        return Student::update($_POST);
     }
 
-    public function delete(): void
+    public function delete(): bool
     {
         require "Models/Student.php";
-        Student::delete($_GET["id"]);
+
+        return Student::delete($_GET["id"]);
     }
 }

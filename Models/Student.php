@@ -39,13 +39,14 @@ class Student extends ClassParticipant
         return $arr;
     }
 
-    public static function create($params): void
+    public static function create($params): bool
     {
         $object = new Student($params);
 
         $sql = "insert into students (name, phone_number, address, class_id)
                 values('{$object->getName()}', '{$object->getPhoneNumber()}', '{$object->getAddress()}', '{$object->getClassId()}', )";
-        (new Connect())->execute($sql);
+
+        return (new Connect())->execute($sql);
     }
 
     public static function find($id): object
@@ -57,7 +58,7 @@ class Student extends ClassParticipant
         return new Student($each);
     }
 
-    public static function update(array $params): void
+    public static function update(array $params): bool
     {
         $object = new Student($params);
 
@@ -69,12 +70,14 @@ class Student extends ClassParticipant
                     class_id = '{$object->getClassId()}'
                 where
                     id = '{$object->getId()}'";
-        (new Connect())->execute($sql);
+
+        return (new Connect())->execute($sql);
     }
 
-    public static function delete($id): void
+    public static function delete($id): bool
     {
         $sql = "delete from students where id = '$id'";
-        (new Connect())->execute($sql);
+
+        return (new Connect())->execute($sql);
     }
 }
