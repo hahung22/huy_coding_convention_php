@@ -2,43 +2,73 @@
 
 class ClassController
 {
-    public function index(): void
+    public function index(): bool
     {
-        require 'Models/ClassObject.php';
-        $classes = ClassObject::all();
+        try {
+            require 'Models/ClassObject.php';
+            $classes = ClassObject::all();
 
-        require 'views/class/index.php';
+            if (!empty($classes)) {
+                require 'views/class/index.php';
+                return true;
+            }
+
+            return false;
+        } catch (\Throwable $e) {
+            echo $e->getMessage();
+            return false;
+        }
     }
 
-    public function create():void
+    public function create(): bool
     {
-        require 'views/class/create.php';
+        try {
+            require 'views/class/create.php';
+
+            return true;
+        } catch (\Throwable $e) {
+            echo $e->getMessage();
+            return false;
+        }
     }
 
-    public function store(): void
+    public function store(): bool
     {
         require 'Models/ClassObject.php';
-        ClassObject::create($_POST);
+
+        return ClassObject::create($_POST);
     }
 
-    public function edit(): void
+    public function edit(): bool
     {
-        $id = $_GET['id'];
-        require 'Models/ClassObject.php';
-        $class = ClassObject::find($id);
+        try {
+            $id = $_GET['id'];
+            require 'Models/ClassObject.php';
+            $class = ClassObject::find($id);
 
-        require 'views/class/edit.php';
+            if (!empty($class)) {
+                require 'views/class/edit.php';
+                return true;
+            }
+
+            return false;
+        } catch (\Throwable $e) {
+            echo $e->getMessage();
+            return false;
+        }
     }
 
-    public function update(): void
+    public function update(): bool
     {
         require 'Models/ClassObject.php';
-        ClassObject::update($_POST);
+
+        return ClassObject::update($_POST);
     }
 
-    public function delete(): void
+    public function delete(): bool
     {
         require 'Models/ClassObject.php';
-        ClassObject::delete($_GET['id']);
+
+        return ClassObject::delete($_GET['id']);
     }
 }

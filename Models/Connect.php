@@ -24,10 +24,12 @@ class Connect
         return $result;
     }
 
-    public function execute($sql): void
+    public function execute($sql): bool
     {
         $connect = $this->getConnect();
         $result  = mysqli_query($connect, $sql);
         mysqli_close($connect);
+
+        return $result;
     }
 }

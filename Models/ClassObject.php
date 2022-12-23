@@ -48,13 +48,14 @@ class ClassObject
         return $classes;
     }
 
-    public static function create($params): void
+    public static function create($params): bool
     {
         $object = new ClassObject($params);
 
         $sql = "insert into classes(name)
                 values('{$object->getName()}')";
-        (new Connect())->execute($sql);
+
+        return (new Connect())->execute($sql);
     }
 
     public static function find($id): object
@@ -66,7 +67,7 @@ class ClassObject
         return new ClassObject($each);
     }
 
-    public static function update(array $params): void
+    public static function update(array $params): bool
     {
         $object = new ClassObject($params);
 
@@ -75,12 +76,14 @@ class ClassObject
                     name = '{$object->getName()}'
                 where
                     id = '{$object->getId()}'";
-        (new Connect())->execute($sql);
+
+        return (new Connect())->execute($sql);
     }
 
-    public static function delete($id): void
+    public static function delete($id): bool
     {
         $sql = "delete from classes where id = '$id'";
-        (new Connect())->execute($sql);
+
+        return (new Connect())->execute($sql);
     }
 }
